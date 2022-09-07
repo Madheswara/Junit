@@ -45,14 +45,15 @@ public static void login() {
 	public static void quitbr() {
     driver.quit();
 }
-//@Before
-//public void beforem() {
-//	
-//}
-//@After
-//public void afterm() {
-//	
-//}
+@Before
+public void beforem() {
+	System.out.println("starttime:"+java.time.LocalTime.now());
+	
+}
+@After
+public void afterm() {
+	System.out.println("Endtime:"+java.time.LocalTime.now());
+}
 @Test
 public void method1() {
 	driver.findElement(By.xpath("//button[text()='✕']")).click();
@@ -68,20 +69,18 @@ public void method2() throws Exception {
 	for (int i = 0; i < elements.size(); i++) {
 		WebElement gett = elements.get(i);
 		text = gett.getText();
-		System.out.println(text);
 	}
 		File file = new File("C:\\Users\\et\\eclipse-workspace\\JunitTask1\\src\\test\\resources\\excel\\task1.xlsx");
 		XSSFWorkbook wb = new XSSFWorkbook();
 		XSSFSheet Sheet = wb.createSheet("mobilelist");
-		Sheet.createRow(0).createCell(0).setCellValue(text);
-		try {
-			FileOutputStream fo = new FileOutputStream(file);
-			wb.write(fo);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+		for (int i = 0; i <= text.length(); i++) {
+			XSSFRow row = Sheet.createRow(i);
+			XSSFCell cell = row.createCell(i);
+			cell.setCellValue(text);
 		}
+		FileOutputStream fo = new FileOutputStream(file);
+		wb.write(fo);
 	}
-
 @Test
 public void method3() {
 	driver.findElement(By.xpath("(//div[@class='_4rR01T'])[2]")).click();
