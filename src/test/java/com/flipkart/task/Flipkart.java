@@ -4,10 +4,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -18,6 +20,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -65,7 +70,7 @@ public void method2() throws Exception {
 		text = gett.getText();
 		System.out.println(text);
 	}
-		File file = new File("C:\\Users\\et\\eclipse-workspace\\Augclass\\src\\test\\resources\\task1.xlsx");
+		File file = new File("C:\\Users\\et\\eclipse-workspace\\JunitTask1\\src\\test\\resources\\excel\\task1.xlsx");
 		XSSFWorkbook wb = new XSSFWorkbook();
 		XSSFSheet Sheet = wb.createSheet("mobilelist");
 		Sheet.createRow(0).createCell(0).setCellValue(text);
@@ -94,7 +99,7 @@ public void method4() throws Exception {
 	String text1 = element2.getText();
 	System.out.println(text1);
 	try {
-		FileInputStream fi = new FileInputStream("C:\\Users\\et\\eclipse-workspace\\Augclass\\src\\test\\resources\\task1.xlsx");
+		FileInputStream fi = new FileInputStream("C:\\Users\\et\\eclipse-workspace\\JunitTask1\\src\\test\\resources\\excel\\task1.xlsx");
 		XSSFWorkbook wb = new XSSFWorkbook(fi);
 		XSSFSheet sheetAt = wb.getSheetAt(0);
 		XSSFRow row = sheetAt.getRow(1);
@@ -107,7 +112,16 @@ public void method4() throws Exception {
 		
 	} catch (FileNotFoundException e) {
 		e.printStackTrace();
-	}
+	}}
+@Test
+public void method5() throws Exception {
+	JavascriptExecutor jss = (JavascriptExecutor)driver;
+	WebElement element3 = driver.findElement(By.xpath("//div[text()='Specifications']"));
+	jss.executeScript("arguments[0].scrollintoview(true)",element3);
+	TakesScreenshot tss = (TakesScreenshot)driver;
+	File as = tss.getScreenshotAs(OutputType.FILE);
+	File Despath = new File("C:\\Users\\et\\eclipse-workspace\\JunitTask1\\src\\test\\resources\\ssc");
+	FileUtils.copyFile(as, Despath);
 	
 }
 }
