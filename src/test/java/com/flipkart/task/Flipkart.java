@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -46,20 +47,20 @@ public static void login() {
     driver.quit();
 }
 @Before
-public void beforem() {
+ 	public void beforem() {
 	System.out.println("starttime:"+java.time.LocalTime.now());
 	
 }
 @After
-public void afterm() {
+	public void afterm() {
 	System.out.println("Endtime:"+java.time.LocalTime.now());
 }
 @Test
-public void method1() {
+	public void method1() {
 	driver.findElement(By.xpath("//button[text()='✕']")).click();
 }
 @Test
-public void method2() throws Exception {
+	public void method2() throws Exception {
 	WebDriverWait wait = new WebDriverWait(driver, 20);
 	wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@title='Search for products, brands and more']")));
 	driver.findElement(By.name("q")).sendKeys("apple mobiles");
@@ -82,7 +83,7 @@ public void method2() throws Exception {
 		wb.write(fo);
 	}
 @Test
-public void method3() {
+	public void method3() {
 	driver.findElement(By.xpath("(//div[@class='_4rR01T'])[2]")).click();
 	String parent = driver.getWindowHandle();
 	Set<String> all = driver.getWindowHandles();
@@ -93,33 +94,29 @@ public void method3() {
 	}
 }
 @Test
-public void method4() throws Exception {
+	public void method4() throws Exception {
+	driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	WebElement element2 = driver.findElement(By.xpath("//span[@class='B_NuCI']"));
 	String text1 = element2.getText();
 	System.out.println(text1);
-	try {
-		FileInputStream fi = new FileInputStream("C:\\Users\\et\\eclipse-workspace\\JunitTask1\\src\\test\\resources\\excel\\task1.xlsx");
-		XSSFWorkbook wb = new XSSFWorkbook(fi);
-		XSSFSheet sheetAt = wb.getSheetAt(0);
-		XSSFRow row = sheetAt.getRow(1);
-		XSSFCell cell = row.getCell(0);
-		System.out.println(cell);
-		String value = cell.getStringCellValue();
-		System.out.println(value);
-		
-		Assert.assertEquals(text1, value);
-		
-	} catch (FileNotFoundException e) {
-		e.printStackTrace();
-	}}
+	FileInputStream fi = new FileInputStream("C:\\Users\\et\\eclipse-workspace\\JunitTask1\\src\\test\\resources\\excel\\task1.xlsx");
+	XSSFWorkbook wb = new XSSFWorkbook(fi);
+	XSSFSheet sheetAt = wb.getSheetAt(0);
+	XSSFRow row = sheetAt.getRow(1);
+	XSSFCell cell = row.getCell(0);
+	String value = cell.getStringCellValue();
+	Assert.assertEquals(text1, value);
+	System.out.println("Strict valiation passed");
+	}
 @Test
-public void method5() throws Exception {
+	public void method5() throws Exception {
 	JavascriptExecutor jss = (JavascriptExecutor)driver;
 	WebElement element3 = driver.findElement(By.xpath("//div[text()='Specifications']"));
-	jss.executeScript("arguments[0].scrollintoview(true)",element3);
+	jss.executeScript("arguments[0].scrollIntoView(true)", element3);
+	Thread.sleep(3000);	
 	TakesScreenshot tss = (TakesScreenshot)driver;
 	File as = tss.getScreenshotAs(OutputType.FILE);
-	File Despath = new File("C:\\Users\\et\\eclipse-workspace\\JunitTask1\\src\\test\\resources\\ssc");
+	File Despath = new File("C:\\Users\\et\\eclipse-workspace\\JunitTask1\\src\\test\\resources\\ssc\\spec.png");
 	FileUtils.copyFile(as, Despath);
 	
 }
