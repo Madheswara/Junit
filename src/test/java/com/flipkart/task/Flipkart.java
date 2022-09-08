@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -66,18 +67,21 @@ public static void login() {
 	driver.findElement(By.name("q")).sendKeys("apple mobiles");
 	driver.findElement(By.xpath("//button[@type='submit']")).click();
 	Thread.sleep(2000);
+	List<String> li = new ArrayList<String>();
 	List<WebElement> elements = driver.findElements(By.xpath("//div[@class='_4rR01T']"));
 	for (int i = 0; i < elements.size(); i++) {
 		WebElement gett = elements.get(i);
 		text = gett.getText();
+		li.add(text);
 	}
+		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		File file = new File("C:\\Users\\et\\eclipse-workspace\\JunitTask1\\src\\test\\resources\\excel\\task1.xlsx");
 		XSSFWorkbook wb = new XSSFWorkbook();
 		XSSFSheet Sheet = wb.createSheet("mobilelist");
-		for (int i = 0; i <= text.length(); i++) {
-			XSSFRow row = Sheet.createRow(i);
-			XSSFCell cell = row.createCell(i);
-			cell.setCellValue(text);
+		for (int j = 0; j < li.size(); j++) {
+			XSSFRow row = Sheet.createRow(j);
+			XSSFCell cell = row.createCell(0);
+			cell.setCellValue(li.get(j));
 		}
 		FileOutputStream fo = new FileOutputStream(file);
 		wb.write(fo);
@@ -85,6 +89,7 @@ public static void login() {
 @Test
 	public void method3() {
 	driver.findElement(By.xpath("(//div[@class='_4rR01T'])[2]")).click();
+	driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 	String parent = driver.getWindowHandle();
 	Set<String> all = driver.getWindowHandles();
 	for (String child : all) {
@@ -106,7 +111,7 @@ public static void login() {
 	XSSFCell cell = row.getCell(0);
 	String value = cell.getStringCellValue();
 	Assert.assertEquals(text1, value);
-	System.out.println("Strict valiation passed");
+	System.out.println("Strict valiation passed"+value);
 	}
 @Test
 	public void method5() throws Exception {
